@@ -1,0 +1,16 @@
+{
+  "name": "icollage",
+  "id": "1278029562500471916",
+  "api": "1.0.0",
+  "main": "./.dist/main.js",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "enablePrivatePluginApi": true,
+  "editorType": ["figma"],
+  "ui": "./.dist/ui.html",
+  "networkAccess": {
+    "allowedDomains": ["*"],
+    "reasoning": "To Get Svg Images.",
+    "devAllowedDomains": ["*"]
+  }
+}
