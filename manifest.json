@@ -2,7 +2,7 @@
   "name": "icollage",
   "id": "1278029562500471916",
   "api": "1.0.0",
-  "main": "./.dist/main.js",
+  "main": "./.dist/index.js",
   "capabilities": [],
   "enableProposedApi": false,
   "enablePrivatePluginApi": true,

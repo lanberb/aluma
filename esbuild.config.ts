@@ -6,7 +6,7 @@ type ConfigKeys = "app" | "style" | "main";
 
 const CONFIG: { [key in ConfigKeys]: BuildOptions } = {
   app: {
-    entryPoints: ["./src/app.tsx"],
+    entryPoints: ["./src/app/index.tsx"],
     bundle: true,
     minify: false,
     write: false,
@@ -15,13 +15,13 @@ const CONFIG: { [key in ConfigKeys]: BuildOptions } = {
     tsconfig: "./tsconfig.json",
   },
   style: {
-    entryPoints: ["./src/app.css"],
+    entryPoints: ["./src/app/index.css"],
     bundle: true,
     minify: false,
     write: false,
   },
   main: {
-    entryPoints: ["./src/main.ts"],
+    entryPoints: ["./src/main/index.ts"],
     outdir: "./.dist/",
     bundle: true,
     minify: false,
@@ -69,7 +69,6 @@ function handleOnWatch() {
     "./src/",
     { persistent: true, recursive: true },
     (eventType, filename) => {
-      console.clear();
       logger.log(`<magenta>[${eventType.toUpperCase()}]: <reset>${filename}`);
       build();
     }
@@ -77,9 +76,9 @@ function handleOnWatch() {
 }
 
 function outputHtml(styles: string, scripts: string) {
-  const html = readFileSync("./src/app.html", "utf-8");
-  const styleEl = `<style>\n${styles}\n</style>`;
-  const scriptEl = `<script>\n${scripts}\n</script>`;
+  const html = readFileSync("./src/app/index.html", "utf-8");
+  const styleEl = `<style>${styles}</style>`;
+  const scriptEl = `<script>${scripts}</script>`;
 
   writeFileSync("./.dist/ui.html", `${html}${styleEl}\n${scriptEl}`);
 }

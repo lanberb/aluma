@@ -1,0 +1,13 @@
+.button {
+  background-color: var(--figma-color-bg-secondary);
+  border-radius: var(--radius-full);
+  padding: auto 0;
+  text-align: center;
+  width: 100%;
+  height: 36px;
+  font-size: 12px;
+}
+
+.button:hover {
+  border: solid 2px var(--figma-color-border-selected);
+}
