@@ -1,18 +1,8 @@
 /**
  * @summary used for ui.html
  */
-import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
-import { Button } from "./components/ui/Button";
-import { Form } from "./components/ui/Form";
-import { ImportMap } from "./components/ui/ImportMap";
-import { Spacer } from "./components/ui/Spacer";
-import { Message, messageTypes } from "../libs/constants/message";
-import { ImportFormat, ZipBinaryImagesComposition, ZipComposition, createZipAsync } from "../domain/feature/zip";
-import { ImportMapComposition } from "../domain/feature/importMap";
-import { message } from "../domain/message";
-import { ResponseGetImageUrls } from "../domain/message/main";
-import { downloadBlob } from "../libs/utils/client";
 import { css } from "@linaria/core";
 import { Index } from "./components/pages";
 
