@@ -1,13 +1,13 @@
 {
-  "name": "icollage",
+  "name": "iconbook",
   "id": "1278029562500471916",
   "api": "1.0.0",
-  "main": "./.dist/index.js",
+  "main": "./.dist/main/index.js",
   "capabilities": [],
   "enableProposedApi": false,
   "enablePrivatePluginApi": true,
   "editorType": ["figma"],
-  "ui": "./.dist/ui.html",
+  "ui": "./.dist/ui/index.html",
   "networkAccess": {
     "allowedDomains": ["*"],
     "reasoning": "To Get Svg Images.",

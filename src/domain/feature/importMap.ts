@@ -1,4 +1,4 @@
-import { ImportMapNodeProps, ImportMapNodeToken } from "../../app/components/ImportMap";
+import { ImportMapNodeProps, ImportMapNodeToken } from "../../app/components/ui/ImportMap";
 
 export type ImportMapComposition = Array<Array<ImportMapNodeProps>>;
 export type ImportMapMode = "normal" | "flat";
@@ -24,7 +24,7 @@ export const createImportMapComposition = (nodes: SceneNode[], compositionName: 
   const convertedNodes = mode === "flat" ? createFlatSceneNodes(nodes) : nodes;
 
   const headRow: ImportMapNodeProps[] = [{ type: "text", text: compositionName }];
-  const childRows = convertedNodes.reduce<ImportMapComposition>(function createImportMapRow(arr, node, index, _, prefixTokens?: ImportMapNodeProps[], isLastChild: boolean = false) {
+  const childRows = convertedNodes.reduce<ImportMapComposition>(function createImportMapRow(arr, node, index, _, prefixTokens?: ImportMapNodeProps[], isLastChild = false) {
     const row: ImportMapNodeProps[] = [...(prefixTokens || [])];
 
     if (node.type !== "FRAME" && node.type !== "GROUP" && node.type !== "COMPONENT") {

@@ -25,7 +25,7 @@ const handleOnMessageImageUrls = async (token: string) => {
 
   const ids = createImageIds(selectedElement.children.concat());
   const res = await api.getImages({
-    token,
+    token: "figd_JVQokt_2MVsq3RhULvhdsnulDbP7UZ3Q26PDCXp_",
     options: {
       ids,
       fileKey,
