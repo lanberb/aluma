@@ -2,15 +2,16 @@
  * @summary used as main thread worker. (≠ not for ui.html)
  */
 
-import { api } from "../domain/apis";
-import { createImageIds } from "../domain/feature/image";
-import { ImportMapMode, createImportMapComposition } from "../domain/feature/importMap";
-import { createZipComposition } from "../domain/feature/zip";
-import { message } from "../domain/message";
-import { messageTypes } from "../libs/constants/message";
+import {api} from "../domain/apis";
+import {createImageIds} from "../domain/feature/image";
+import {ImportMapMode, createImportMapComposition} from "../domain/feature/importMap";
+import {createZipComposition} from "../domain/feature/zip";
+import {Message, createParentMessages} from "../domain/message/parent";
+
+const message = createParentMessages();
 
 const handleOnMessageImageUrls = async (token: string) => {
-  const { currentPage, fileKey } = figma;
+  const {currentPage, fileKey} = figma;
   const selectedElement = currentPage.selection[0];
 
   if (!fileKey) {
@@ -25,7 +26,7 @@ const handleOnMessageImageUrls = async (token: string) => {
 
   const ids = createImageIds(selectedElement.children.concat());
   const res = await api.getImages({
-    token: "figd_JVQokt_2MVsq3RhULvhdsnulDbP7UZ3Q26PDCXp_",
+    token,
     options: {
       ids,
       fileKey,
@@ -35,33 +36,36 @@ const handleOnMessageImageUrls = async (token: string) => {
   const urlMap = await res.json();
   const composition = createZipComposition(selectedElement.children.concat());
 
-  message.responseGetImageUrls({ urlMap: urlMap.images, composition });
+  message.resGetImageUrls({urlMap: urlMap.images, composition});
 };
 
 const handleOnMessageImportMapComposition = (mode: ImportMapMode) => {
-  const { currentPage } = figma;
+  const {currentPage} = figma;
   const selectedElement = currentPage.selection[0];
 
   if (!selectedElement) {
-    message.responseGetImportMapComposition([]);
+    message.resGetImportMapComposition({composition: []});
     return;
   }
   if (selectedElement.type === "FRAME" || selectedElement.type === "GROUP" || selectedElement.type === "COMPONENT") {
-    message.responseGetImportMapComposition(createImportMapComposition(selectedElement.children.concat(), selectedElement.name, mode));
+    message.resGetImportMapComposition({composition: createImportMapComposition(selectedElement.children.concat(), selectedElement.name, mode)});
   }
 };
 
-figma.ui.on("message", async (message) => {
+figma.ui.on("message", async (message: Message<any>) => {
   switch (message.type) {
-    case messageTypes.imageUrls:
-      await handleOnMessageImageUrls(message.token);
+    case "run":
+      await handleOnMessageImageUrls(message.data.token);
       return;
-    case messageTypes.importMapComposition:
-      handleOnMessageImportMapComposition(message.mode);
+    case "imageUrls":
+      await handleOnMessageImageUrls(message.data.token);
+      return;
+    case "importMapComposition":
+      handleOnMessageImportMapComposition(message.data.mode);
       return;
     default:
       return;
   }
 });
 figma.on("selectionchange", () => handleOnMessageImportMapComposition("normal"));
-figma.showUI(__html__, { width: 640, height: 320, themeColors: true });
+figma.showUI(__html__, {width: 640, height: 320, themeColors: true});

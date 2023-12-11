@@ -1,6 +1,6 @@
-import React, { memo } from "react";
-import { ImportMapComposition } from "../../../../domain/feature/importMap";
-import { styled } from "@linaria/react";
+import React, {memo} from "react";
+import {ImportMapComposition} from "../../../../domain/feature/importMap";
+import {styled} from "@linaria/react";
 
 export type ImportMapNodeToken = "vertical" | "horizontal" | "junction" | "corner" | "space" | "text";
 
@@ -89,11 +89,11 @@ const _ImportMapNode = styled.div`
     height: fit-content;
   }
 `;
-interface ImportMapNodeProps {
+export interface ImportMapNodeProps {
   type: ImportMapNodeToken;
   text?: string;
 }
-const ImportMapNode: React.FC<ImportMapNodeProps> = ({ type, text }) => {
+const ImportMapNode: React.FC<ImportMapNodeProps> = ({type, text}) => {
   return (
     <_ImportMapNode aria-hidden={type !== "text" || !text} data-type={type}>
       {type === "text" && text && <p>{text}</p>}
@@ -124,7 +124,7 @@ const _ImportMap = styled.div`
 interface ImportMapProps {
   composition: ImportMapComposition;
 }
-export const ImportMap: React.FC<ImportMapProps> = memo(({ composition }) => {
+export const ImportMap: React.FC<ImportMapProps> = memo(({composition}) => {
   return (
     <_ImportMap>
       {composition.length === 0 ? (
