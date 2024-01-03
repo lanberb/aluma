@@ -1,6 +1,4 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { createRoot } from "react-dom/client";
-import { css } from "@linaria/core";
 import { Button } from "../ui/Button";
 import { Form } from "../ui/Form";
 import { ImportMap } from "../ui/ImportMap";

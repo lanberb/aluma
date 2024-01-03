@@ -40,8 +40,6 @@ css`
     }
   }
 `;
-
-function main() {
   const App: React.FC = () => {
     return (
       <>
@@ -49,6 +47,8 @@ function main() {
       </>
     );
   };
+
+function main() {
 
   const app = document.querySelector("#app")!; // たぶん#appあるだろうという
   createRoot(app).render(
