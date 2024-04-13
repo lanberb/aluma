@@ -1,6 +1,6 @@
 import linaria from "@linaria/esbuild";
 import { build as buildAsync, type BuildOptions } from "esbuild";
-import { readFileSync, watch, writeFileSync, rmSync, existsSync } from "fs";
+import { readFileSync, watch, writeFileSync } from "fs";
 import { Logger } from "./src/libs/logger/index.js";
 
 type ConfigKeys = "app" | "main";
@@ -54,15 +54,6 @@ async function build() {
   writeFileSync("./.dist/ui/index.html", `${html}${styleEl}\n${scriptEl}`);
 
   logger.log("<green>[APP] <reset>Success");
-
-  /**
-   * Remove Wasted Files.
-   */
-  // logger.log("<yellow>[APP] <reset>Remove Wasted Files...");
-  // const existsStyle = existsSync("./.dist/ui/index.css");
-  // const existsScript = existsSync("./.dist/ui/index.js");
-  // existsStyle && rmSync("./.dist/ui/index.css");
-  // existsScript && rmSync("./.dist/ui/index.js");
 }
 
 function handleOnWatch() {
@@ -74,8 +65,8 @@ function handleOnWatch() {
   });
 }
 
+await build();
+
 if (process.argv.includes("--watch")) {
   handleOnWatch();
-} else {
-  await build();
 }

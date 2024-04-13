@@ -1,4 +1,4 @@
-import { ImportMapNodeProps, ImportMapNodeToken } from "../../app/components/ui/ImportMap";
+import { type ImportMapNodeProps } from "../../app/components/ui/ImportMap";
 
 export type ImportMapComposition = Array<Array<ImportMapNodeProps>>;
 export type ImportMapMode = "normal" | "flat";
@@ -24,7 +24,14 @@ export const createImportMapComposition = (nodes: SceneNode[], compositionName: 
   const convertedNodes = mode === "flat" ? createFlatSceneNodes(nodes) : nodes;
 
   const headRow: ImportMapNodeProps[] = [{ type: "text", text: compositionName }];
-  const childRows = convertedNodes.reduce<ImportMapComposition>(function createImportMapRow(arr, node, index, _, prefixTokens?: ImportMapNodeProps[], isLastChild = false) {
+  const childRows = convertedNodes.reduce<ImportMapComposition>(function createImportMapRow(
+    arr,
+    node,
+    index,
+    _,
+    prefixTokens?: ImportMapNodeProps[],
+    isLastChild = false
+  ) {
     const row: ImportMapNodeProps[] = [...(prefixTokens || [])];
 
     if (node.type !== "FRAME" && node.type !== "GROUP" && node.type !== "COMPONENT") {
@@ -33,7 +40,7 @@ export const createImportMapComposition = (nodes: SceneNode[], compositionName: 
       return arr;
     }
 
-    const hasChildren = node.name.charAt(0) === "/" && node.children;
+    const hasChildren = node.name.charAt(0) === "/" && node.children.length !== 0;
     const isLast = index === convertedNodes.length - 1 || isLastChild;
 
     if (isLast) {
@@ -46,8 +53,13 @@ export const createImportMapComposition = (nodes: SceneNode[], compositionName: 
     arr.push(row);
 
     if (hasChildren) {
-      const childPrefixTokens: ImportMapNodeProps[] = [...(prefixTokens || []), { type: isLast ? "space" : "vertical" }];
-      node.children.forEach((child, index) => createImportMapRow(arr, child, index, _, childPrefixTokens, index === node.children.length - 1));
+      const childPrefixTokens: ImportMapNodeProps[] = [
+        ...(prefixTokens || []),
+        { type: isLast ? "space" : "vertical" },
+      ];
+      node.children.forEach((child, index) =>
+        createImportMapRow(arr, child, index, _, childPrefixTokens, index === node.children.length - 1)
+      );
     }
 
     return arr;

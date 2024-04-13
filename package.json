@@ -14,21 +14,28 @@
     "@babel/preset-react": "^7.22.15",
     "@figma/plugin-typings": "^1.76.0",
     "@linaria/esbuild": "^5.0.3",
+    "@types/eslint": "^8",
     "@types/node": "^20.5.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "esbuild": "^0.19.2",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "*",
+    "typescript-eslint": "^7.4.0"
   },
   "dependencies": {
     "@linaria/babel-preset": "^5.0.3",
     "@linaria/core": "^5.0.2",
     "@linaria/react": "^5.0.3",
     "classname": "^0.0.0",
+    "esbuild": "^0.20.2",
     "jszip": "^3.10.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.2",
     "url": "^0.11.1"
   }
 }

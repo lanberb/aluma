@@ -1,10 +1,6 @@
 import JSZip from "jszip";
 
 export type ImportFormat = "png" | "svg";
-const mineType: { [format in ImportFormat]: string } = {
-  png: "image/png",
-  svg: "image/svg+xml",
-};
 const extension: { [format in ImportFormat]: string } = {
   png: ".png",
   svg: ".svg",
@@ -41,7 +37,11 @@ export const createZipComposition = (nodes: SceneNode[]) => {
 export interface ZipBinaryImagesComposition {
   [id: string]: Blob;
 }
-export const createZipAsync = (binaryImages: ZipBinaryImagesComposition, composition: ReturnType<typeof createZipComposition>, format: ImportFormat) => {
+export const createZipAsync = (
+  binaryImages: ZipBinaryImagesComposition,
+  composition: ReturnType<typeof createZipComposition>,
+  format: ImportFormat
+) => {
   const zip = composition.reduce<JSZip>(function createFile(zipFile, node) {
     const { children, id, name } = node;
 

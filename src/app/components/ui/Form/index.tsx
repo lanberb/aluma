@@ -1,26 +1,39 @@
 import { css } from "@linaria/core";
 import { styled } from "@linaria/react";
 import React from "react";
+import { Status } from "../../../../libs/type";
 
 const Frame = styled.form<React.FormHTMLAttributes<HTMLFormElement>>`
   display: flex;
   flex-direction: column;
-  padding: 0 12px;
 `;
 
-const _TextField = css`
-  appearance: none;
-  background-color: var(--figma-color-bg);
-  border: solid 1px var(--figma-color-border);
-  color: var(--figma-color-text);
-  display: block;
-  padding: 8px;
-  margin-top: 6px;
+const TextField = styled.input<{ status: Status }>`
+  padding: 8px 0;
   width: 100%;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0.8px;
+  background-color: transparent;
+  appearance: none;
+  outline: none;
+  border: none;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: ${({ status }) => {
+    if (status === "success") {
+      return "var(--figma-color-border-onsuccess)";
+    }
+    if (status === "empty" || status === "invalid") {
+      return "var(--figma-color-border-ondanger)";
+    }
+    return "var(--figma-color-border)";
+  }};
+
+  &:focus:not(:placeholder-shown) {
+    border-bottom-color: var(--figma-color-border-onselected-strong);
+  }
 `;
-const TextField: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = ({ ...rest }) => {
-  return <input type="text" className={_TextField} {...rest} />;
-};
 
 const _Checkbox = css`
   all: revert;

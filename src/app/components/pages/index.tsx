@@ -3,16 +3,17 @@ import { Button } from "../ui/Button";
 import { Form } from "../ui/Form";
 import { ImportMap } from "../ui/ImportMap";
 import { Spacer } from "../ui/Spacer";
-import { ImportFormat, ZipBinaryImagesComposition, createZipAsync } from "../../../domain/feature/zip";
+import { ImportFormat, ZipBinaryImagesComposition, ZipComposition, createZipAsync } from "../../../domain/feature/zip";
 import { ImportMapComposition } from "../../../domain/feature/importMap";
-import { message } from "../../../domain/message";
-import { ResponseGetImageUrls } from "../../../domain/message/main";
-import { Message, messageTypes } from "../../../libs/constants/message";
+import { Message, messageTypes } from "../../../libs/constants/messageTypes";
 import { downloadBlob } from "../../../libs/utils/client";
+import { MessageChildClient } from "../../../libs/message";
+import { HorizontalLayout } from "../layouts/HorizontalLayout";
 
 const TEST_ACCESS_TOKEN = "figd_JVQokt_2MVsq3RhULvhdsnulDbP7UZ3Q26PDCXp_";
 
 export const Index: React.FC = () => {
+  const client = new MessageChildClient();
   const selectedElementName = useRef("");
   const accessToken = useRef(TEST_ACCESS_TOKEN);
   const isFlat = useRef(false);
@@ -20,44 +21,51 @@ export const Index: React.FC = () => {
   const [importMapComposition, setImportMapComposition] = useState<ImportMapComposition>([]);
 
   const handleOnClickButton = useCallback(() => {
-    message.requestGetImageUrls({ token: accessToken.current });
-  }, []);
+    client?.requestGetImageUrls({ token: accessToken.current });
+  }, [client]);
   const handleOnChangeSelectSvg = useCallback(() => (importFormat.current = "svg"), []);
   const handleOnChangeSelectPng = useCallback(() => (importFormat.current = "png"), []);
-  const handleOnChangeEnableFlat = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    isFlat.current = e.target.checked;
-    message.requestGetImportMapComposition({ mode: e.target.checked ? "flat" : "normal" });
-  }, []);
-  const handleOnInputAccessToken = useCallback((e: React.FormEvent<HTMLInputElement>) => {
-    accessToken.current = e.currentTarget.value;
-  }, []);
+  const handleOnChangeEnableFlat = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      isFlat.current = e.target.checked;
+      client?.requestGetImportMapComposition({
+        mode: e.target.checked ? "flat" : "normal",
+      });
+    },
+    [client]
+  );
   const handleOnRun = useCallback(() => {
-    message.requestGetImportMapComposition({ mode: isFlat.current ? "flat" : "normal" });
-  }, []);
+    client?.requestGetImportMapComposition({
+      mode: isFlat.current ? "flat" : "normal",
+    });
+  }, [client]);
   const handleOnMessageImportMapComposition = useCallback((data: ImportMapComposition) => {
     setImportMapComposition(data);
     selectedElementName.current = data[0]?.[0]?.text || "";
     isFlat.current = false;
   }, []);
-  const handleOnMessageImageUrls = useCallback(async (data: ResponseGetImageUrls) => {
-    const { urlMap, composition } = data;
-    const ids = Object.keys(urlMap);
+  const handleOnMessageImageUrls = useCallback(
+    async (data: { urlMap: { [id: string]: string }; composition: ZipComposition }) => {
+      const { urlMap, composition } = data;
+      const ids = Object.keys(urlMap);
 
-    const blobs = await ids.reduce<Promise<ZipBinaryImagesComposition>>(async (obj, id) => {
-      const fetchImg = async () => {
-        const url = urlMap[id];
-        const res = await fetch(url);
-        const img = await res.blob();
-        return img;
-      };
-      (await obj)[id] = await fetchImg();
-      return obj;
-    }, Promise.resolve({}));
+      const blobs = await ids.reduce<Promise<ZipBinaryImagesComposition>>(async (obj, id) => {
+        const fetchImg = async () => {
+          const url = urlMap[id];
+          const res = await fetch(url);
+          const img = await res.blob();
+          return img;
+        };
+        (await obj)[id] = await fetchImg();
+        return obj;
+      }, Promise.resolve({}));
 
-    const zip = await createZipAsync(blobs, composition, "svg");
+      const zip = await createZipAsync(blobs, composition, "svg");
 
-    downloadBlob(zip, selectedElementName.current);
-  }, []);
+      downloadBlob(zip, selectedElementName.current);
+    },
+    []
+  );
 
   const handleOnMessage = useCallback((event: MessageEvent) => {
     const { data, type } = event.data.pluginMessage as Message;
@@ -81,15 +89,13 @@ export const Index: React.FC = () => {
   }, []);
 
   return (
-    <React.Fragment>
-      <div className="flexbox">
-        <ImportMap composition={importMapComposition} />
-      </div>
-      <div className="flexbox">
+    <HorizontalLayout>
+      <ImportMap composition={importMapComposition} />
+      <div>
         <p>インポート形式</p>
         <Spacer size={[0, 12]} />
         <Form.Frame>
-          <Form.TextField id="accessToken" placeholder="Figma Personal Access Tokenを入力" defaultValue="" onInput={handleOnInputAccessToken} />
+          {/* <Form.TextField id="accessToken" placeholder="Figma Personal Access Tokenを入力" defaultValue="" onInput={handleOnInputAccessToken} /> */}
           <Spacer size={[0, 12]} />
           <Form.Checkbox id="selectSvg" onChange={handleOnChangeSelectSvg} />
           svg
@@ -105,6 +111,6 @@ export const Index: React.FC = () => {
           </Button>
         </Form.Frame>
       </div>
-    </React.Fragment>
+    </HorizontalLayout>
   );
 };

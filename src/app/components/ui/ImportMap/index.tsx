@@ -89,7 +89,7 @@ const _ImportMapNode = styled.div`
     height: fit-content;
   }
 `;
-interface ImportMapNodeProps {
+export interface ImportMapNodeProps {
   type: ImportMapNodeToken;
   text?: string;
 }
@@ -124,7 +124,8 @@ const _ImportMap = styled.div`
 interface ImportMapProps {
   composition: ImportMapComposition;
 }
-export const ImportMap: React.FC<ImportMapProps> = memo(({ composition }) => {
+
+export const ImportMap: React.FC<ImportMapProps> = memo(function Component({ composition }) {
   return (
     <_ImportMap>
       {composition.length === 0 ? (

@@ -1,6 +1,6 @@
 export interface Message {
   type: keyof typeof messageTypes;
-  data?: any;
+  data?: unknown;
 }
 
 export const messageTypes = {
@@ -10,4 +10,7 @@ export const messageTypes = {
   // Figma <--> UIのmessageType
   imageUrls: "imageUrls",
   importMapComposition: "importMapComposition",
+
+  getFigmaPAT: "getFigmaPAT",
+  putFigmaPAT: "putFigmaPAT",
 } as const;
