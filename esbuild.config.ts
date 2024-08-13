@@ -7,7 +7,7 @@ type ConfigKeys = "app" | "main";
 
 const CONFIG: { [key in ConfigKeys]: BuildOptions } = {
   app: {
-    entryPoints: ["./src/app/index.tsx"],
+    entryPoints: ["./src/app/App.tsx"],
     outdir: "./.dist/ui",
     bundle: true,
     minify: false,
@@ -47,8 +47,8 @@ async function build() {
   await buildAsync(CONFIG.app);
 
   const html = readFileSync("./src/app/index.html", "utf-8");
-  const style = readFileSync("./.dist/ui/index.css", "utf-8");
-  const script = readFileSync("./.dist/ui/index.js", "utf-8");
+  const style = readFileSync("./.dist/ui/App.css", "utf-8");
+  const script = readFileSync("./.dist/ui/App.js", "utf-8");
   const styleEl = `<style>${style}</style>`;
   const scriptEl = `<script>${script}</script>`;
   writeFileSync("./.dist/ui/index.html", `${html}${styleEl}\n${scriptEl}`);

@@ -45,12 +45,24 @@ const _Checkbox = css`
   margin: 0 4px 0 0;
   background-color: var(--figma-color-bg);
 `;
-const Checkbox: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = ({ ...rest }) => {
-  return <input type="checkbox" className={_Checkbox} {...rest} />;
+const Checkbox: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (props) => {
+  return <input type="checkbox" className={_Checkbox} {...props} />;
+};
+
+const _Radio = css`
+  all: revert;
+  position: relative;
+  width: 14px;
+  height: 14px;
+  margin: 0 4px 0 0;
+`;
+const Radio: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (props) => {
+  return <input type="radio" className={_Radio} {...props} />;
 };
 
 export const Form = {
   Frame,
   TextField,
   Checkbox,
+  Radio,
 };

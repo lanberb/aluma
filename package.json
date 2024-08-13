@@ -6,9 +6,8 @@
   },
   "scripts": {
     "build": "ts-node esbuild.config.ts",
-    "watch": "yarn build --watch",
-    "dev": "node ./.dist/main.js",
-    "test": "node --test --loader ts-node/esm **/**/*.test.ts"
+    "watch": "yarn build && yarn build --watch",
+    "dev": "node ./.dist/main/index.js"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.22.15",
@@ -30,7 +29,6 @@
     "@linaria/babel-preset": "^5.0.3",
     "@linaria/core": "^5.0.2",
     "@linaria/react": "^5.0.3",
-    "classname": "^0.0.0",
     "esbuild": "^0.20.2",
     "jszip": "^3.10.1",
     "react": "^18.2.0",

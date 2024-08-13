@@ -2163,7 +2163,6 @@ __metadata:
     "@types/react-dom": "npm:^18"
     "@typescript-eslint/eslint-plugin": "npm:^7.4.0"
     "@typescript-eslint/parser": "npm:^7.4.0"
-    classname: "npm:^0.0.0"
     esbuild: "npm:^0.20.2"
     eslint: "npm:^8.57.0"
     eslint-plugin-react: "npm:^7.34.1"
@@ -2485,13 +2484,6 @@ __metadata:
     ansi-styles: "npm:^4.1.0"
     supports-color: "npm:^7.1.0"
   checksum: 4a3fef5cc34975c898ffe77141450f679721df9dde00f6c304353fa9c8b571929123b26a0e4617bde5018977eb655b31970c297b91b63ee83bb82aeb04666880
-  languageName: node
-  linkType: hard
-
-"classname@npm:^0.0.0":
-  version: 0.0.0
-  resolution: "classname@npm:0.0.0"
-  checksum: 578ad3481fdc5a6762d3a9ed3e96c920293b7b83f0dd103d4040bcf4e175f1d70db90c619362cc1066eb6efaaca37dd43347189b3b6e0278c8031f1028f107e5
   languageName: node
   linkType: hard
 

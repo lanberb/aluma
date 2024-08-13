@@ -1,30 +1,28 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { Button } from "../ui/Button";
-import { Form } from "../ui/Form";
-import { ImportMap } from "../ui/ImportMap";
-import { Spacer } from "../ui/Spacer";
-import { ImportFormat, ZipBinaryImagesComposition, ZipComposition, createZipAsync } from "../../../domain/feature/zip";
-import { ImportMapComposition } from "../../../domain/feature/importMap";
-import { Message, messageTypes } from "../../../libs/constants/messageTypes";
-import { downloadBlob } from "../../../libs/utils/client";
-import { MessageChildClient } from "../../../libs/message";
-import { HorizontalLayout } from "../layouts/HorizontalLayout";
+import {
+  ImportFormat,
+  ZipBinaryImagesComposition,
+  ZipComposition,
+  createZipAsync,
+} from "../../../../domain/feature/zip";
+import { ImportMapComposition } from "../../../../domain/feature/importMap";
+import { Message, messageTypes } from "../../../../libs/constants/messageTypes";
+import { downloadBlob } from "../../../../libs/utils/client";
+import { MessageChildClient } from "../../../../libs/message";
+import { HomePage } from "./HomePage";
 
-const TEST_ACCESS_TOKEN = "figd_JVQokt_2MVsq3RhULvhdsnulDbP7UZ3Q26PDCXp_";
-
-export const Index: React.FC = () => {
+export const ConnectedHomePage: React.FC = () => {
   const client = new MessageChildClient();
   const selectedElementName = useRef("");
-  const accessToken = useRef(TEST_ACCESS_TOKEN);
+  const accessToken = useRef("");
   const isFlat = useRef(false);
   const importFormat = useRef<ImportFormat>("svg");
   const [importMapComposition, setImportMapComposition] = useState<ImportMapComposition>([]);
 
   const handleOnClickButton = useCallback(() => {
-    client?.requestGetImageUrls({ token: accessToken.current });
+    client?.requestGetImageUrls({ token: accessToken.current ?? "" });
   }, [client]);
-  const handleOnChangeSelectSvg = useCallback(() => (importFormat.current = "svg"), []);
-  const handleOnChangeSelectPng = useCallback(() => (importFormat.current = "png"), []);
+  const handleOnChangeImageType = useCallback((imageType: "svg" | "png") => (importFormat.current = imageType), []);
   const handleOnChangeEnableFlat = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       isFlat.current = e.target.checked;
@@ -68,7 +66,7 @@ export const Index: React.FC = () => {
   );
 
   const handleOnMessage = useCallback((event: MessageEvent) => {
-    const { data, type } = event.data.pluginMessage as Message;
+    const { data, type } = event.data.pluginMessage;
     switch (type) {
       case messageTypes.imageUrls:
         handleOnMessageImageUrls(data);
@@ -89,28 +87,11 @@ export const Index: React.FC = () => {
   }, []);
 
   return (
-    <HorizontalLayout>
-      <ImportMap composition={importMapComposition} />
-      <div>
-        <p>インポート形式</p>
-        <Spacer size={[0, 12]} />
-        <Form.Frame>
-          {/* <Form.TextField id="accessToken" placeholder="Figma Personal Access Tokenを入力" defaultValue="" onInput={handleOnInputAccessToken} /> */}
-          <Spacer size={[0, 12]} />
-          <Form.Checkbox id="selectSvg" onChange={handleOnChangeSelectSvg} />
-          svg
-          <Form.Checkbox id="selectPng" onChange={handleOnChangeSelectPng} />
-          png
-          <Form.Checkbox id="enableFlat" onChange={handleOnChangeEnableFlat} />
-          flat
-          <Form.Checkbox id="enableManifest" defaultChecked />
-          manifest
-          <Spacer size={[0, 20]} />
-          <Button type="button" onClick={handleOnClickButton}>
-            選択したアセットを保存する
-          </Button>
-        </Form.Frame>
-      </div>
-    </HorizontalLayout>
+    <HomePage
+      composition={importMapComposition}
+      onChangeImportType={handleOnChangeImageType}
+      onChangeEnableFlat={handleOnChangeEnableFlat}
+      onClickSubmitButton={handleOnClickButton}
+    />
   );
 };
