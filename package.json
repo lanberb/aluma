@@ -7,10 +7,12 @@
   "scripts": {
     "build": "ts-node esbuild.config.ts",
     "watch": "yarn build && yarn build --watch",
-    "dev": "node ./.dist/main/index.js"
+    "dev": "node ./.dist/main/index.js",
+    "check": "biome check --write ./src/*"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.22.15",
+    "@biomejs/biome": "1.8.3",
     "@figma/plugin-typings": "^1.76.0",
     "@linaria/esbuild": "^5.0.3",
     "@types/eslint": "^8",

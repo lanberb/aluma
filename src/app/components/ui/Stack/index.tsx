@@ -1,5 +1,5 @@
 import { styled } from "@linaria/react";
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 
 interface StackProps {
   as?: keyof JSX.IntrinsicElements;

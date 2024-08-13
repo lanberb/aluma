@@ -1,5 +1,5 @@
 import { styled } from "@linaria/react";
-import React from "react";
+import type React from "react";
 
 const Wrapper = styled.div`
   display: grid;

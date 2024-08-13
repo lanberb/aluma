@@ -1,6 +1,6 @@
+import type { ImportMapComposition } from "../../domain/feature/importMap";
+import type { ZipComposition } from "../../domain/feature/zip";
 import { messageTypes } from "../constants/messageTypes";
-import { type ImportMapComposition } from "../../domain/feature/importMap";
-import { type ZipComposition } from "../../domain/feature/zip";
 
 export class MessageChildClient {
   public requestGetImageUrls(options: { token: string }) {
@@ -9,11 +9,13 @@ export class MessageChildClient {
       {
         pluginMessage: { type: messageTypes.imageUrls, token },
       },
-      "*"
+      "*",
     );
   }
 
-  public requestGetImportMapComposition(options: { mode: "normal" | "flat" }): void {
+  public requestGetImportMapComposition(options: {
+    mode: "normal" | "flat";
+  }): void {
     const { mode } = options;
     parent.postMessage(
       {
@@ -22,7 +24,7 @@ export class MessageChildClient {
           mode,
         },
       },
-      "*"
+      "*",
     );
   }
 
@@ -33,7 +35,7 @@ export class MessageChildClient {
       {
         pluginMessage: { type: messageTypes.getFigmaPAT, key },
       },
-      "*"
+      "*",
     );
   };
 
@@ -46,13 +48,16 @@ export class MessageChildClient {
           value,
         },
       },
-      "*"
+      "*",
     );
   };
 }
 
 export class MessageParentClient {
-  public responseGetImageUrls(data: { urlMap: Record<string, string>; composition: ZipComposition }) {
+  public responseGetImageUrls(data: {
+    urlMap: Record<string, string>;
+    composition: ZipComposition;
+  }) {
     figma.ui.postMessage({
       type: messageTypes.imageUrls,
       data,

@@ -1,5 +1,5 @@
-import React from "react";
 import { css } from "@linaria/core";
+import type React from "react";
 
 const style = css`
   cursor: pointer;
@@ -20,11 +20,9 @@ const style = css`
   }
 `;
 
-export const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
-  children,
-  type = "button",
-  ...rest
-}) => {
+export const Button: React.FC<
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+> = ({ children, type = "button", ...rest }) => {
   return (
     <button className={style} type={type} {...rest}>
       {children}

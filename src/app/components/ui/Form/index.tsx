@@ -1,7 +1,7 @@
 import { css } from "@linaria/core";
 import { styled } from "@linaria/react";
-import React from "react";
-import { Status } from "../../../../libs/type";
+import type React from "react";
+import type { Status } from "../../../../libs/type";
 
 const Frame = styled.form<React.FormHTMLAttributes<HTMLFormElement>>`
   display: flex;
@@ -45,7 +45,9 @@ const _Checkbox = css`
   margin: 0 4px 0 0;
   background-color: var(--figma-color-bg);
 `;
-const Checkbox: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (props) => {
+const Checkbox: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (
+  props,
+) => {
   return <input type="checkbox" className={_Checkbox} {...props} />;
 };
 
@@ -56,7 +58,9 @@ const _Radio = css`
   height: 14px;
   margin: 0 4px 0 0;
 `;
-const Radio: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (props) => {
+const Radio: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (
+  props,
+) => {
   return <input type="radio" className={_Radio} {...props} />;
 };
 

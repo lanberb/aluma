@@ -1,8 +1,15 @@
-import React, { memo } from "react";
-import { ImportMapComposition } from "../../../../domain/feature/importMap";
 import { styled } from "@linaria/react";
+import type React from "react";
+import { memo } from "react";
+import type { ImportMapComposition } from "../../../../domain/feature/importMap";
 
-export type ImportMapNodeToken = "vertical" | "horizontal" | "junction" | "corner" | "space" | "text";
+export type ImportMapNodeToken =
+  | "vertical"
+  | "horizontal"
+  | "junction"
+  | "corner"
+  | "space"
+  | "text";
 
 const _ImportMapNode = styled.div`
   --importMapNode--width: 1px;
@@ -125,16 +132,24 @@ interface ImportMapProps {
   composition: ImportMapComposition;
 }
 
-export const ImportMap: React.FC<ImportMapProps> = memo(function Component({ composition }) {
+export const ImportMap: React.FC<ImportMapProps> = memo(function Component({
+  composition,
+}) {
   return (
     <_ImportMap>
       {composition.length === 0 ? (
-        <p className="importMap__empty">{"アイコンを含んだフレームを\n選択すると表示されます"}</p>
+        <p className="importMap__empty">
+          {"アイコンを含んだフレームを\n選択すると表示されます"}
+        </p>
       ) : (
         composition.map((row, rowIndex) => (
           <div className="importMap__row" key={`row-${rowIndex}`}>
             {row.map((node, nodeIndex) => (
-              <ImportMapNode key={`row-${rowIndex}_node-${nodeIndex}`} type={node.type} text={node.text} />
+              <ImportMapNode
+                key={`row-${rowIndex}_node-${nodeIndex}`}
+                type={node.type}
+                text={node.text}
+              />
             ))}
           </div>
         ))

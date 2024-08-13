@@ -3,4 +3,3 @@ export const APP_UI_OPTIONS: ShowUIOptions = {
   height: 400,
   themeColors: true,
 };
- 

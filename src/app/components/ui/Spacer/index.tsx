@@ -1,5 +1,5 @@
 import { styled } from "@linaria/react";
-import React from "react";
+import type React from "react";
 
 interface Props {
   size: [x: number, y: number];

@@ -6,11 +6,16 @@ const extension: { [format in ImportFormat]: string } = {
   svg: ".svg",
 };
 
-export interface ZipComposition extends Array<{ name: string; id: string; children?: ZipComposition }> {}
+export interface ZipComposition
+  extends Array<{ name: string; id: string; children?: ZipComposition }> {}
 
 export const createZipComposition = (nodes: SceneNode[]) => {
   return nodes.reduce<ZipComposition>((arr, node) => {
-    if (node.type !== "FRAME" && node.type !== "GROUP" && node.type !== "COMPONENT") {
+    if (
+      node.type !== "FRAME" &&
+      node.type !== "GROUP" &&
+      node.type !== "COMPONENT"
+    ) {
       return arr;
     }
 
@@ -40,7 +45,7 @@ export interface ZipBinaryImagesComposition {
 export const createZipAsync = (
   binaryImages: ZipBinaryImagesComposition,
   composition: ReturnType<typeof createZipComposition>,
-  format: ImportFormat
+  format: ImportFormat,
 ) => {
   const zip = composition.reduce<JSZip>(function createFile(zipFile, node) {
     const { children, id, name } = node;

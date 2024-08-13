@@ -1,6 +1,9 @@
-import test from "node:test";
 import assert from "node:assert";
-import { ImportMapComposition, createImportMapComposition } from "./importMap";
+import test from "node:test";
+import {
+  type ImportMapComposition,
+  createImportMapComposition,
+} from "./importMap";
 
 const sampleValue = [
   { name: "子1", type: "FRAME" },
@@ -52,15 +55,32 @@ test("#importMap", (t) => {
       [{ type: "junction" }, { type: "text", text: "子2" }],
       [{ type: "junction" }, { type: "text", text: "子3" }],
       [{ type: "junction" }, { type: "text", text: "子4" }],
-      [{ type: "vertical" }, { type: "junction" }, { type: "text", text: "孫1" }],
+      [
+        { type: "vertical" },
+        { type: "junction" },
+        { type: "text", text: "孫1" },
+      ],
       [{ type: "vertical" }, { type: "corner" }, { type: "text", text: "孫2" }],
-      [{ type: "vertical" }, { type: "space" }, { type: "junction" }, { type: "text", text: "曽孫1" }],
-      [{ type: "vertical" }, { type: "space" }, { type: "corner" }, { type: "text", text: "曽孫2" }],
+      [
+        { type: "vertical" },
+        { type: "space" },
+        { type: "junction" },
+        { type: "text", text: "曽孫1" },
+      ],
+      [
+        { type: "vertical" },
+        { type: "space" },
+        { type: "corner" },
+        { type: "text", text: "曽孫2" },
+      ],
       [{ type: "junction" }, { type: "text", text: "子5" }],
       [{ type: "junction" }, { type: "text", text: "子6" }],
       [{ type: "vertical" }, { type: "corner" }, { type: "text", text: "孫1" }],
       [{ type: "corner" }, { type: "text", text: "子7" }],
     ];
-    assert.strictEqual(createImportMapComposition(sampleValue, "sample"), expectValue);
+    assert.strictEqual(
+      createImportMapComposition(sampleValue, "sample"),
+      expectValue,
+    );
   });
 });

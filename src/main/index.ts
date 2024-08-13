@@ -4,7 +4,10 @@
 
 import { api } from "../domain/apis";
 import { createImageIds } from "../domain/feature/image";
-import { ImportMapMode, createImportMapComposition } from "../domain/feature/importMap";
+import {
+  type ImportMapMode,
+  createImportMapComposition,
+} from "../domain/feature/importMap";
 import { createZipComposition } from "../domain/feature/zip";
 import { APP_UI_OPTIONS } from "../libs/constants/app";
 import { messageTypes } from "../libs/constants/messageTypes";
@@ -20,7 +23,11 @@ const handleOnMessageImageUrls = async (token: string) => {
   if (!fileKey) {
     return;
   }
-  if (selectedElement.type !== "FRAME" && selectedElement.type !== "GROUP" && selectedElement.type !== "COMPONENT") {
+  if (
+    selectedElement.type !== "FRAME" &&
+    selectedElement.type !== "GROUP" &&
+    selectedElement.type !== "COMPONENT"
+  ) {
     return;
   }
   if (!selectedElement.children) {
@@ -50,9 +57,17 @@ const handleOnMessageImportMapComposition = (mode: ImportMapMode) => {
     message.responseGetImportMapComposition([]);
     return;
   }
-  if (selectedElement.type === "FRAME" || selectedElement.type === "GROUP" || selectedElement.type === "COMPONENT") {
+  if (
+    selectedElement.type === "FRAME" ||
+    selectedElement.type === "GROUP" ||
+    selectedElement.type === "COMPONENT"
+  ) {
     message.responseGetImportMapComposition(
-      createImportMapComposition(selectedElement.children.concat(), selectedElement.name, mode)
+      createImportMapComposition(
+        selectedElement.children.concat(),
+        selectedElement.name,
+        mode,
+      ),
     );
   }
 };
@@ -87,5 +102,7 @@ figma.ui.on("message", async (message) => {
       return;
   }
 });
-figma.on("selectionchange", () => handleOnMessageImportMapComposition("normal"));
+figma.on("selectionchange", () =>
+  handleOnMessageImportMapComposition("normal"),
+);
 figma.showUI(__html__, APP_UI_OPTIONS);

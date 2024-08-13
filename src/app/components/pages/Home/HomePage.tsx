@@ -1,10 +1,10 @@
-import React from "react";
+import type React from "react";
+import type { ImportMapComposition } from "../../../../domain/feature/importMap";
+import { HorizontalLayout } from "../../layouts/HorizontalLayout";
 import { Button } from "../../ui/Button";
 import { Form } from "../../ui/Form";
 import { ImportMap } from "../../ui/ImportMap";
 import { Spacer } from "../../ui/Spacer";
-import { HorizontalLayout } from "../../layouts/HorizontalLayout";
-import { ImportMapComposition } from "../../../../domain/feature/importMap";
 import { Stack } from "../../ui/Stack";
 
 const imageType = ["png", "svg"] as const;
@@ -34,7 +34,11 @@ export const HomePage: React.FC<Props> = ({
           <Stack>
             {imageType.map((type) => (
               <Stack key={type} alignItems="center">
-                <Form.Radio id={type} name="imageType" onChange={() => onChangeImportType(type)} />
+                <Form.Radio
+                  id={type}
+                  name="imageType"
+                  onChange={() => onChangeImportType(type)}
+                />
                 <label htmlFor={type}>{type}</label>
               </Stack>
             ))}

@@ -8,6 +8,7 @@ import { GlobalStyles } from "./assets/styles/GlobalStyles";
 import { ConnectedHomePage } from "./components/pages/Home/ConnectedHomePage";
 
 function main() {
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
   const app = document.querySelector("#app")!; // たぶん#appあるだろうという
   createRoot(app).render(
     <React.StrictMode>
@@ -22,11 +23,11 @@ function main() {
             ],
             {
               initialEntries: ["/"],
-            }
+            },
           )}
         />
       </div>
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 }
 main();
