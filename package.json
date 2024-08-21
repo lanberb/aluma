@@ -15,17 +15,11 @@
     "@biomejs/biome": "1.8.3",
     "@figma/plugin-typings": "^1.76.0",
     "@linaria/esbuild": "^5.0.3",
-    "@types/eslint": "^8",
     "@types/node": "^20.5.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@typescript-eslint/eslint-plugin": "^7.4.0",
-    "@typescript-eslint/parser": "^7.4.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.34.1",
     "ts-node": "^10.9.1",
-    "typescript": "*",
-    "typescript-eslint": "^7.4.0"
+    "typescript": "*"
   },
   "dependencies": {
     "@linaria/babel-preset": "^5.0.3",
