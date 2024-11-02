@@ -1,6 +1,6 @@
 import linaria from "@linaria/esbuild";
 import { build as buildAsync, type BuildOptions } from "esbuild";
-import { readFileSync, watch, writeFileSync } from "fs";
+import { readFileSync, watch, writeFileSync } from "node:fs";
 import { Logger } from "./src/libs/logger/index.js";
 
 type ConfigKeys = "app" | "main";
@@ -59,10 +59,14 @@ async function build() {
 function handleOnWatch() {
   logger.log("\n<magenta>[WATCH] <reset>processing...\n");
 
-  watch("./src/", { persistent: true, recursive: true }, async (eventType, filename) => {
-    logger.log(`\n<magenta>[${eventType.toUpperCase()}] <reset>${filename}`);
-    await build();
-  });
+  watch(
+    "./src/",
+    { persistent: true, recursive: true },
+    async (eventType, filename) => {
+      logger.log(`\n<magenta>[${eventType.toUpperCase()}] <reset>${filename}`);
+      await build();
+    },
+  );
 }
 
 await build();
