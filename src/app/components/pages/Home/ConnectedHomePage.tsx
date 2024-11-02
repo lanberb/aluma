@@ -1,5 +1,8 @@
 import type React from "react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { messageTypes } from "../../../../libs/constants/messageTypes";
+import { MessageChildClient } from "../../../../libs/message";
+import { downloadBlob } from "../../../../libs/utils/client";
 import type { ImportMapComposition } from "../../../domain/feature/importMap";
 import {
   type ImportFormat,
@@ -7,9 +10,6 @@ import {
   type ZipComposition,
   createZipAsync,
 } from "../../../domain/feature/zip";
-import { messageTypes } from "../../../../libs/constants/messageTypes";
-import { MessageChildClient } from "../../../../libs/message";
-import { downloadBlob } from "../../../../libs/utils/client";
 import { HomePage } from "./HomePage";
 
 export const ConnectedHomePage: React.FC = () => {
