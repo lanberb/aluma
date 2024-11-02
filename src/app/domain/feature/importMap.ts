@@ -1,4 +1,4 @@
-import type { ImportMapNodeProps } from "../../app/components/ui/ImportMap";
+import type { ImportMapNodeProps } from "../../../app/components/ui/ImportMap";
 
 export type ImportMapComposition = Array<Array<ImportMapNodeProps>>;
 export type ImportMapMode = "normal" | "flat";

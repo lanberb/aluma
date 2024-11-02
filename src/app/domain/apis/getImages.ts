@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../libs/constants/url";
+import { BASE_URL } from "../../../libs/constants/url";
 
 export type Options = {
   fileKey: string;

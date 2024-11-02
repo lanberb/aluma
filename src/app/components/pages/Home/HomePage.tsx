@@ -1,5 +1,5 @@
 import type React from "react";
-import type { ImportMapComposition } from "../../../../domain/feature/importMap";
+import type { ImportMapComposition } from "../../../domain/feature/importMap";
 import { HorizontalLayout } from "../../layouts/HorizontalLayout";
 import { Button } from "../../ui/Button";
 import { Form } from "../../ui/Form";

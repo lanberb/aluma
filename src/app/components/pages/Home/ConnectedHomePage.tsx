@@ -1,12 +1,12 @@
 import type React from "react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
-import type { ImportMapComposition } from "../../../../domain/feature/importMap";
+import type { ImportMapComposition } from "../../../domain/feature/importMap";
 import {
   type ImportFormat,
   type ZipBinaryImagesComposition,
   type ZipComposition,
   createZipAsync,
-} from "../../../../domain/feature/zip";
+} from "../../../domain/feature/zip";
 import { messageTypes } from "../../../../libs/constants/messageTypes";
 import { MessageChildClient } from "../../../../libs/message";
 import { downloadBlob } from "../../../../libs/utils/client";

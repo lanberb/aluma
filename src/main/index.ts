@@ -2,13 +2,13 @@
  * @summary used as main thread worker. (≠ not for ui.html)
  */
 
-import { api } from "../domain/apis";
-import { createImageIds } from "../domain/feature/image";
+import { api } from "../app/domain/apis";
+import { createImageIds } from "../app/domain/feature/image";
 import {
   type ImportMapMode,
   createImportMapComposition,
-} from "../domain/feature/importMap";
-import { createZipComposition } from "../domain/feature/zip";
+} from "../app/domain/feature/importMap";
+import { createZipComposition } from "../app/domain/feature/zip";
 import { APP_UI_OPTIONS } from "../libs/constants/app";
 import { messageTypes } from "../libs/constants/messageTypes";
 import { MessageParentClient } from "../libs/message";
@@ -43,7 +43,7 @@ const handleOnMessageImageUrls = async (token: string) => {
       format: "svg",
     },
   });
-  const urlMap = await res.json();
+  const urlMap = await res.json<{ images: Record<string, string> }>();
   const composition = createZipComposition(selectedElement.children.concat());
 
   message.responseGetImageUrls({ urlMap: urlMap.images, composition });

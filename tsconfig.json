@@ -1,15 +1,26 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
     "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "types": [
+      "@cloudflare/workers-types/2023-07-01",
+      "./node_modules/@types",
+      "./node_modules/@figma",
+      "./node_modules/@figma/plugin-typings",
+    ],
+    "moduleResolution": "Bundler",
     "strict": true,
-    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
-    "moduleResolution": "Bundler"
+    "jsx": "react-jsx",
   },
-  "include": ["./src"],
+  "include": [
+    "./src"
+  ],
   "ts-node": {
     "esm": true
-  }
+  },
 }

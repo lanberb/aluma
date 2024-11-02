@@ -1,5 +1,5 @@
-import type { ImportMapComposition } from "../../domain/feature/importMap";
-import type { ZipComposition } from "../../domain/feature/zip";
+import type { ImportMapComposition } from "../../app/domain/feature/importMap";
+import type { ZipComposition } from "../../app/domain/feature/zip";
 import { messageTypes } from "../constants/messageTypes";
 
 export class MessageChildClient {
