@@ -16,13 +16,13 @@ import { MessageParentClient } from "../libs/message";
 const message = new MessageParentClient();
 
 const handleOnMessageImageUrls = async (token: string) => {
-  console.log(token);
   const { currentPage, fileKey } = figma;
   const selectedElement = currentPage.selection[0];
 
   if (!fileKey) {
     return;
   }
+
   if (
     selectedElement.type !== "FRAME" &&
     selectedElement.type !== "GROUP" &&
@@ -36,14 +36,14 @@ const handleOnMessageImageUrls = async (token: string) => {
 
   const ids = createImageIds(selectedElement.children.concat());
   const res = await api.getImages({
-    token: "figd_JVQokt_2MVsq3RhULvhdsnulDbP7UZ3Q26PDCXp_",
+    token: token,
     options: {
       ids,
       fileKey,
       format: "svg",
     },
   });
-  const urlMap = await res.json<{ images: Record<string, string> }>();
+  const urlMap = await res.json();
   const composition = createZipComposition(selectedElement.children.concat());
 
   message.responseGetImageUrls({ urlMap: urlMap.images, composition });
@@ -87,9 +87,6 @@ figma.ui.on("message", async (message) => {
   switch (message.type) {
     case messageTypes.imageUrls:
       await handleOnMessageImageUrls(message.token);
-      return;
-    case messageTypes.importMapComposition:
-      handleOnMessageImportMapComposition(message.mode);
       return;
     case messageTypes.getFigmaPAT:
       handleOnMessageGetFigmaPAT(message.key);

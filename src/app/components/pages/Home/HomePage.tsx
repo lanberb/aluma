@@ -1,4 +1,6 @@
-import type React from "react";
+// biome-ignore lint/style/useImportType: <explanation>
+import React, { KeyboardEvent } from "react";
+import type { Status } from "../../../../libs/type";
 import type { ImportMapComposition } from "../../../domain/feature/importMap";
 import { HorizontalLayout } from "../../layouts/HorizontalLayout";
 import { Button } from "../../ui/Button";
@@ -10,26 +12,35 @@ import { Stack } from "../../ui/Stack";
 const imageType = ["png", "svg"] as const;
 
 interface Props {
+  accessTokenStatus: Status;
+  defaultAccessToken: string;
   composition: ImportMapComposition;
   onChangeImportType: (imageType: "svg" | "png") => void;
-  onChangeEnableFlat: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickSubmitButton: () => void;
+  onInputAccessToken: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export const HomePage: React.FC<Props> = ({
+  accessTokenStatus,
+  defaultAccessToken,
   composition,
   onChangeImportType,
-  onChangeEnableFlat,
   onClickSubmitButton,
+  onInputAccessToken,
 }) => {
   return (
     <HorizontalLayout>
       <ImportMap composition={composition} />
       <div>
-        <p>インポート形式</p>
         <Spacer size={[0, 12]} />
         <Form.Frame>
-          {/* <Form.TextField id="accessToken" placeholder="Figma Personal Access Tokenを入力" defaultValue="" onInput={handleOnInputAccessToken} /> */}
+          <Form.TextField
+            status={accessTokenStatus}
+            id="accessToken"
+            placeholder="Figma Personal Access Tokenを入力"
+            defaultValue={defaultAccessToken}
+            onInput={onInputAccessToken}
+          />
           <Spacer size={[0, 12]} />
           <Stack>
             {imageType.map((type) => (
@@ -43,10 +54,6 @@ export const HomePage: React.FC<Props> = ({
               </Stack>
             ))}
           </Stack>
-          <Form.Checkbox id="enableFlat" onChange={onChangeEnableFlat} />
-          flat
-          <Form.Checkbox id="enableManifest" defaultChecked />
-          manifest
           <Spacer size={[0, 20]} />
           <Button type="button" onClick={onClickSubmitButton}>
             選択したアセットを保存する

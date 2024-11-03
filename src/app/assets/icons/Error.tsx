@@ -1,4 +1,5 @@
-import type React from "react";
+// biome-ignore lint/style/useImportType: <explanation>
+import React from "react";
 
 export const ErrorIcon: React.FC = () => {
   return (

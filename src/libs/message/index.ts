@@ -30,7 +30,6 @@ export class MessageChildClient {
 
   public requestGetFigmaPAT = (options: { key: string }) => {
     const { key } = options;
-    console.log(key);
     parent.postMessage(
       {
         pluginMessage: { type: messageTypes.getFigmaPAT, key },

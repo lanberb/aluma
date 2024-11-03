@@ -1,5 +1,6 @@
 import { styled } from "@linaria/react";
-import type React from "react";
+// biome-ignore lint/style/useImportType: <explanation>
+import React from "react";
 
 const Wrapper = styled.div`
   display: grid;

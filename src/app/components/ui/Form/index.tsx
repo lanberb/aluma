@@ -1,6 +1,7 @@
 import { css } from "@linaria/core";
 import { styled } from "@linaria/react";
-import type React from "react";
+// biome-ignore lint/style/useImportType: <explanation>
+import React from "react";
 import type { Status } from "../../../../libs/type";
 
 const Frame = styled.form<React.FormHTMLAttributes<HTMLFormElement>>`
@@ -29,10 +30,6 @@ const TextField = styled.input<{ status: Status }>`
     }
     return "var(--figma-color-border)";
   }};
-
-  &:focus:not(:placeholder-shown) {
-    border-bottom-color: var(--figma-color-border-onselected-strong);
-  }
 `;
 
 const _Checkbox = css`

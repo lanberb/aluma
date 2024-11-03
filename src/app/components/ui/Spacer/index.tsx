@@ -1,5 +1,6 @@
 import { styled } from "@linaria/react";
-import type React from "react";
+// biome-ignore lint/style/useImportType: <explanation>
+import React from "react";
 
 interface Props {
   size: [x: number, y: number];

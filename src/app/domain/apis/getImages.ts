@@ -10,7 +10,7 @@ interface GetImagesProps {
   token: string;
   options: Options;
 }
-export const getImages = async (props: GetImagesProps) => {
+export const getImages = async (props: GetImagesProps): Promise<Response> => {
   const { token, options } = props;
   const { fileKey, format, ids } = options;
   const url = `${BASE_URL.figma}/images/${fileKey}?format=${format}&ids=${ids}`;

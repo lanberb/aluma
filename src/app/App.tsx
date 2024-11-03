@@ -3,29 +3,17 @@
  */
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
-import { GlobalStyles } from "./assets/styles/GlobalStyles";
 import { ConnectedHomePage } from "./components/pages/Home/ConnectedHomePage";
+import { GlobalStyles } from "./components/styles/GlobalStyles";
 
 function main() {
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
-  const app = document.querySelector("#app")!; // たぶん#appあるだろうという
+  const app = document.querySelector("#app")!;
+
   createRoot(app).render(
     <React.StrictMode>
       <div className={GlobalStyles}>
-        <RouterProvider
-          router={createMemoryRouter(
-            [
-              {
-                path: "/",
-                element: <ConnectedHomePage />,
-              },
-            ],
-            {
-              initialEntries: ["/"],
-            },
-          )}
-        />
+        <ConnectedHomePage />
       </div>
     </React.StrictMode>,
   );

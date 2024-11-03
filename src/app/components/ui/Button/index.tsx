@@ -1,5 +1,6 @@
 import { css } from "@linaria/core";
-import type React from "react";
+// biome-ignore lint/style/useImportType: <explanation>
+import React from "react";
 
 const style = css`
   cursor: pointer;

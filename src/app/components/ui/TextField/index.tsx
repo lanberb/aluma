@@ -1,5 +1,6 @@
 import { styled } from "@linaria/react";
-import type React from "react";
+// biome-ignore lint/style/useImportType: <explanation>
+import React from "react";
 import type { HTMLAttributes } from "react";
 import type { Status } from "../../../../libs/type";
 import { ErrorIcon } from "../../../assets/icons/Error";

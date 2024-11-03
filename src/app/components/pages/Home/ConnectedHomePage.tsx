@@ -1,7 +1,9 @@
-import type React from "react";
+// biome-ignore lint/style/useImportType: <explanation>
+import React, { KeyboardEvent, useMemo } from "react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { messageTypes } from "../../../../libs/constants/messageTypes";
 import { MessageChildClient } from "../../../../libs/message";
+import type { Status } from "../../../../libs/type";
 import { downloadBlob } from "../../../../libs/utils/client";
 import type { ImportMapComposition } from "../../../domain/feature/importMap";
 import {
@@ -15,38 +17,50 @@ import { HomePage } from "./HomePage";
 export const ConnectedHomePage: React.FC = () => {
   const client = new MessageChildClient();
   const selectedElementName = useRef("");
-  const accessToken = useRef("");
-  const isFlat = useRef(false);
   const importFormat = useRef<ImportFormat>("svg");
   const [importMapComposition, setImportMapComposition] =
     useState<ImportMapComposition>([]);
 
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  const accessTokenStatus = useMemo<Status>(() => {
+    const isEmpty = accessToken === "";
+    const isInvalidFormat = accessToken?.substring(0, 5) !== "figd_";
+
+    if (accessToken == null) {
+      return "pending";
+    }
+
+    if (isEmpty || isInvalidFormat) {
+      return "invalid";
+    }
+
+    return "success";
+  }, [accessToken]);
+
+  const handleOnInputAccessToken = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      setAccessToken(e.currentTarget.value);
+    },
+    [],
+  );
+
   const handleOnClickButton = useCallback(() => {
-    client?.requestGetImageUrls({ token: accessToken.current ?? "" });
-  }, [client]);
+    client?.requestGetImageUrls({ token: accessToken ?? "" });
+  }, [client, accessToken]);
   const handleOnChangeImageType = useCallback(
     (imageType: "svg" | "png") => (importFormat.current = imageType),
     [],
   );
-  const handleOnChangeEnableFlat = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      isFlat.current = e.target.checked;
-      client?.requestGetImportMapComposition({
-        mode: e.target.checked ? "flat" : "normal",
-      });
-    },
-    [client],
-  );
   const handleOnRun = useCallback(() => {
     client?.requestGetImportMapComposition({
-      mode: isFlat.current ? "flat" : "normal",
+      mode: "normal",
     });
   }, [client]);
   const handleOnMessageImportMapComposition = useCallback(
     (data: ImportMapComposition) => {
       setImportMapComposition(data);
       selectedElementName.current = data[0]?.[0]?.text || "";
-      isFlat.current = false;
     },
     [],
   );
@@ -89,6 +103,9 @@ export const ConnectedHomePage: React.FC = () => {
         case messageTypes.importMapComposition:
           handleOnMessageImportMapComposition(data);
           return;
+        case messageTypes.getFigmaPAT:
+          console.log(data);
+          return;
         default:
           break;
       }
@@ -103,12 +120,16 @@ export const ConnectedHomePage: React.FC = () => {
     return () => window.removeEventListener("message", handleOnMessage);
   }, [handleOnRun, handleOnMessage]);
 
+  console.log(accessTokenStatus);
+
   return (
     <HomePage
+      accessTokenStatus={accessTokenStatus}
+      defaultAccessToken={accessToken ?? ""}
       composition={importMapComposition}
       onChangeImportType={handleOnChangeImageType}
-      onChangeEnableFlat={handleOnChangeEnableFlat}
       onClickSubmitButton={handleOnClickButton}
+      onInputAccessToken={handleOnInputAccessToken}
     />
   );
 };
