@@ -3,11 +3,15 @@ import type { ZipComposition } from "../../app/domain/feature/zip";
 import { messageTypes } from "../constants/messageTypes";
 
 export class MessageChildClient {
-  public requestGetImageUrls(options: { token: string }) {
-    const { token } = options;
+  public requestGetImageUrls(options: {
+    token: string;
+    format: "svg" | "png";
+    scale: 1 | 2 | 4;
+  }) {
+    const { token, format, scale } = options;
     parent.postMessage(
       {
-        pluginMessage: { type: messageTypes.imageUrls, token },
+        pluginMessage: { type: messageTypes.imageUrls, token, format, scale },
       },
       "*",
     );

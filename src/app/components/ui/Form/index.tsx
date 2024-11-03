@@ -39,7 +39,6 @@ const _Checkbox = css`
   height: 14px;
   border: solid 1px var(--figma-color-border);
   border-radius: 4px;
-  margin: 0 4px 0 0;
   background-color: var(--figma-color-bg);
 `;
 const Checkbox: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (
@@ -53,7 +52,7 @@ const _Radio = css`
   position: relative;
   width: 14px;
   height: 14px;
-  margin: 0 4px 0 0;
+  margin: 0;
 `;
 const Radio: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (
   props,

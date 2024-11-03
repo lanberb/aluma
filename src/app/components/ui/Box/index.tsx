@@ -3,19 +3,10 @@ import type { BoxProps } from "../../styles/mixins/box";
 import type { MarginProps } from "../../styles/mixins/margin";
 import type { PaddingProps } from "../../styles/mixins/padding";
 import type { RootProps } from "../../styles/mixins/root";
-import type { StackProps } from "../../styles/mixins/stack";
 
-type Props = StackProps & MarginProps & PaddingProps & RootProps & BoxProps;
+type Props = BoxProps & RootProps & MarginProps & PaddingProps;
 
-export const Stack = styled.div<Props>`
-  /* Stack */
-  display: flex;
-  flex-direction: ${({ direction = "inherit" }) => direction};
-  flex-wrap: ${({ wrap = "inherit" }) => wrap};
-  gap: ${({ gap = 0 }) => gap};
-  align-items: ${({ alignItems = "inherit" }) => alignItems};
-  justify-content: ${({ justifyContent = "inherit" }) => justifyContent};
-
+export const Box = styled.div<Props>`
   /* Box */
   width: ${({ width = "inherit" }) => width};
   height: ${({ height = "inherit" }) => height};

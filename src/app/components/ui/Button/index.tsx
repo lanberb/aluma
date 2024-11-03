@@ -19,6 +19,12 @@ const style = css`
   &:hover {
     opacity: 0.64;
   }
+
+  &:disabled {
+    color: var(--figma-color-border-disabled-strong);
+    background-color: var(--figma-color-bg-disabled);
+    pointer-events: none;
+  }
 `;
 
 export const Button: React.FC<

@@ -18,10 +18,12 @@ export const ConnectedHomePage: React.FC = () => {
   const client = new MessageChildClient();
   const selectedElementName = useRef("");
   const importFormat = useRef<ImportFormat>("svg");
+  const importScale = useRef<1 | 2 | 4>(2);
+  const [isFetching, setIsFetching] = useState(false);
   const [importMapComposition, setImportMapComposition] =
     useState<ImportMapComposition>([]);
-
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const disabledSubmitButton = importMapComposition.length === 0;
 
   const accessTokenStatus = useMemo<Status>(() => {
     const isEmpty = accessToken === "";
@@ -46,10 +48,20 @@ export const ConnectedHomePage: React.FC = () => {
   );
 
   const handleOnClickButton = useCallback(() => {
-    client?.requestGetImageUrls({ token: accessToken ?? "" });
+    setIsFetching(true);
+
+    client?.requestGetImageUrls({
+      token: accessToken ?? "",
+      format: importFormat.current,
+      scale: importScale.current,
+    });
   }, [client, accessToken]);
-  const handleOnChangeImageType = useCallback(
-    (imageType: "svg" | "png") => (importFormat.current = imageType),
+  const handleOnChangeImageFormat = useCallback(
+    (imageFormat: "svg" | "png") => (importFormat.current = imageFormat),
+    [],
+  );
+  const handleOnChangeImageScale = useCallback(
+    (imageScale: 1 | 2 | 4) => (importScale.current = imageScale),
     [],
   );
   const handleOnRun = useCallback(() => {
@@ -70,25 +82,34 @@ export const ConnectedHomePage: React.FC = () => {
       composition: ZipComposition;
     }) => {
       const { urlMap, composition } = data;
-      const ids = Object.keys(urlMap);
 
-      const blobs = await ids.reduce<Promise<ZipBinaryImagesComposition>>(
-        async (obj, id) => {
-          const fetchImg = async () => {
-            const url = urlMap[id];
-            const res = await fetch(url);
-            const img = await res.blob();
-            return img;
-          };
-          (await obj)[id] = await fetchImg();
-          return obj;
-        },
-        Promise.resolve({}),
-      );
+      try {
+        const ids = Object.keys(urlMap);
 
-      const zip = await createZipAsync(blobs, composition, "svg");
+        const blobs = await ids.reduce<Promise<ZipBinaryImagesComposition>>(
+          async (obj, id) => {
+            const fetchImg = async () => {
+              const url = urlMap[id];
+              const res = await fetch(url);
+              const img = await res.blob();
+              return img;
+            };
+            (await obj)[id] = await fetchImg();
+            return obj;
+          },
+          Promise.resolve({}),
+        );
+        console.log("ok1");
 
-      downloadBlob(zip, selectedElementName.current);
+        const zip = await createZipAsync(
+          blobs,
+          composition,
+          importFormat.current,
+        );
+        downloadBlob(zip, selectedElementName.current);
+      } finally {
+        setIsFetching(false);
+      }
     },
     [],
   );
@@ -120,14 +141,16 @@ export const ConnectedHomePage: React.FC = () => {
     return () => window.removeEventListener("message", handleOnMessage);
   }, [handleOnRun, handleOnMessage]);
 
-  console.log(accessTokenStatus);
-
   return (
     <HomePage
       accessTokenStatus={accessTokenStatus}
       defaultAccessToken={accessToken ?? ""}
+      defaultImportFormat={importFormat.current}
+      disabledSubmitButton={disabledSubmitButton}
       composition={importMapComposition}
-      onChangeImportType={handleOnChangeImageType}
+      showLoading={isFetching}
+      onChangeImportFormat={handleOnChangeImageFormat}
+      onChangeImportScale={handleOnChangeImageScale}
       onClickSubmitButton={handleOnClickButton}
       onInputAccessToken={handleOnInputAccessToken}
     />

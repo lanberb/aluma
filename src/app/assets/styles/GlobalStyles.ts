@@ -38,11 +38,5 @@ export const GlobalStyles = css`
       appearance: none;
       border: none;
     }
-
-    #app,
-    #app > div,
-    #app > section {
-      height: 100%;
-    }
   }
 `;

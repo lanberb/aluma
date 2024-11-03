@@ -2,7 +2,7 @@ import { styled } from "@linaria/react";
 // biome-ignore lint/style/useImportType: <explanation>
 import React from "react";
 import { memo } from "react";
-import type { ImportMapComposition } from "../../../../domain/feature/importMap";
+import type { ImportMapComposition } from "../../../domain/feature/importMap";
 
 export type ImportMapNodeToken =
   | "vertical"
@@ -110,11 +110,11 @@ const ImportMapNode: React.FC<ImportMapNodeProps> = ({ type, text }) => {
 };
 
 const _ImportMap = styled.div`
-  height: 100%;
-  padding: 0 0 16px;
+  height: calc(100% - 16px);
   overflow: scroll;
   display: flex;
   flex-direction: column;
+  padding: 8px;
 
   .importMap__empty {
     position: relative;

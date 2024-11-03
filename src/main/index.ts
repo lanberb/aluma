@@ -15,7 +15,11 @@ import { MessageParentClient } from "../libs/message";
 
 const message = new MessageParentClient();
 
-const handleOnMessageImageUrls = async (token: string) => {
+const handleOnMessageImageUrls = async (
+  token: string,
+  format: "png" | "svg",
+  scale: 1 | 2 | 4,
+) => {
   const { currentPage, fileKey } = figma;
   const selectedElement = currentPage.selection[0];
 
@@ -40,7 +44,8 @@ const handleOnMessageImageUrls = async (token: string) => {
     options: {
       ids,
       fileKey,
-      format: "svg",
+      format,
+      scale,
     },
   });
   const urlMap = await res.json();
@@ -86,7 +91,11 @@ const handleOnMessagePutFigmaPAT = async (key: string, value: string) => {
 figma.ui.on("message", async (message) => {
   switch (message.type) {
     case messageTypes.imageUrls:
-      await handleOnMessageImageUrls(message.token);
+      await handleOnMessageImageUrls(
+        message.token,
+        message.format,
+        message.scale,
+      );
       return;
     case messageTypes.getFigmaPAT:
       handleOnMessageGetFigmaPAT(message.key);
