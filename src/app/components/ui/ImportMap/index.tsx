@@ -114,7 +114,8 @@ const _ImportMap = styled.div`
   overflow: scroll;
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding-block: 8px;
+  padding-inline: 12px;
 
   .importMap__empty {
     position: relative;

@@ -25,6 +25,7 @@ const CONFIG: { [key in ConfigKeys]: BuildOptions } = {
     bundle: true,
     minify: false,
     format: "esm",
+    platform: "browser",
     tsconfig: "./tsconfig.json",
   },
 };

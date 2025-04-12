@@ -23,7 +23,6 @@ export const ConnectedHomePage: React.FC = () => {
   const [importMapComposition, setImportMapComposition] =
     useState<ImportMapComposition>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const disabledSubmitButton = importMapComposition.length === 0;
 
   const accessTokenStatus = useMemo<Status>(() => {
     const isEmpty = accessToken === "";
@@ -39,6 +38,9 @@ export const ConnectedHomePage: React.FC = () => {
 
     return "success";
   }, [accessToken]);
+
+  const disabledSubmitButton =
+    accessTokenStatus !== "success" || importMapComposition.length === 0;
 
   const handleOnInputAccessToken = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
@@ -57,7 +59,7 @@ export const ConnectedHomePage: React.FC = () => {
     });
   }, [client, accessToken]);
   const handleOnChangeImageFormat = useCallback(
-    (imageFormat: "svg" | "png") => (importFormat.current = imageFormat),
+    (imageFormat: ImportFormat) => (importFormat.current = imageFormat),
     [],
   );
   const handleOnChangeImageScale = useCallback(
@@ -117,6 +119,7 @@ export const ConnectedHomePage: React.FC = () => {
   const handleOnMessage = useCallback(
     (event: MessageEvent) => {
       const { data, type } = event.data.pluginMessage;
+
       switch (type) {
         case messageTypes.imageUrls:
           handleOnMessageImageUrls(data);
@@ -124,8 +127,8 @@ export const ConnectedHomePage: React.FC = () => {
         case messageTypes.importMapComposition:
           handleOnMessageImportMapComposition(data);
           return;
-        case messageTypes.getFigmaPAT:
-          console.log(data);
+        case messageTypes.test:
+          console.log({ type, data })
           return;
         default:
           break;

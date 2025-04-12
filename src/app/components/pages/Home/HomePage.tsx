@@ -103,17 +103,18 @@ export const HomePage: React.FC<Props> = ({
                     as="label"
                     fz={12}
                     lh={1}
-                    style={{ marginBottom: 2 }}
                     htmlFor={type}
                   >
-                    {type}
+                    {type.toUpperCase()}
                   </Text>
                 </div>
               ))}
             </div>
           </div>
 
-          <div>
+          <div style={{
+            flexGrow: 1
+          }}>
             <Text fz={12} lh={1} style={{ marginBottom: 8 }}>
               出力倍率
             </Text>
@@ -144,7 +145,6 @@ export const HomePage: React.FC<Props> = ({
                     as="label"
                     fz={12}
                     lh={1}
-                    style={{ marginBottom: 2 }}
                     htmlFor={`scale-${type.toString()}`}
                   >
                     x{type}

@@ -13,4 +13,7 @@ export const messageTypes = {
 
   getFigmaPAT: "getFigmaPAT",
   putFigmaPAT: "putFigmaPAT",
+
+  // 検証用のmessageType
+  test: "test",
 } as const;

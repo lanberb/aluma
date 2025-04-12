@@ -13,7 +13,53 @@ import { APP_UI_OPTIONS } from "../libs/constants/app";
 import { messageTypes } from "../libs/constants/messageTypes";
 import { MessageParentClient } from "../libs/message";
 
+// ![
+//   "SLICE",
+//   "FRAME",
+//   "GROUP",
+//   "COMPONENT_SET",
+//   "COMPONENT",
+//   "INSTANCE",
+//   "BOOLEAN_OPERATION",
+//   "VECTOR",
+//   "STAR",
+//   "LINE",
+//   "ELLIPSE",
+//   "POLYGON",
+//   "RECTANGLE",
+//   "TEXT",
+//   "STICKY",
+//   "CONNECTOR",
+//   "SHAPEWITHTEXT",
+//   "CODEBLOCK",
+//   "STAMP",
+//   "WIDGET",
+//   "EMBED",
+//   "LINKUNFURL",
+//   "MEDIA",
+//   "SECTION",
+//   "HIGHLIGHT",z
+//   "WASHITAPE",
+//   "TABLE",
+// ].includes(selectedElement.type)
+
 const message = new MessageParentClient();
+
+const getSelectedElement = (node: SceneNode | null) => {
+  if (node == null) {
+    return null;
+  }
+  if (
+    node.type === "FRAME" ||
+    node.type === "GROUP" ||
+    node.type === "COMPONENT" ||
+    node.type === "SECTION"
+  ) {
+    return node;
+  }
+
+  return null;
+};
 
 const handleOnMessageImageUrls = async (
   token: string,
@@ -21,20 +67,9 @@ const handleOnMessageImageUrls = async (
   scale: 1 | 2 | 4,
 ) => {
   const { currentPage, fileKey } = figma;
-  const selectedElement = currentPage.selection[0];
+  const selectedElement = getSelectedElement(currentPage.selection[0]);
 
-  if (!fileKey) {
-    return;
-  }
-
-  if (
-    selectedElement.type !== "FRAME" &&
-    selectedElement.type !== "GROUP" &&
-    selectedElement.type !== "COMPONENT"
-  ) {
-    return;
-  }
-  if (!selectedElement.children) {
+  if (!fileKey || selectedElement == null) {
     return;
   }
 
@@ -50,42 +85,29 @@ const handleOnMessageImageUrls = async (
   });
   const urlMap = await res.json();
   const composition = createZipComposition(selectedElement.children.concat());
-
-  message.responseGetImageUrls({ urlMap: urlMap.images, composition });
+  message.responseGetImageUrls({
+    urlMap: urlMap.images,
+    composition,
+    selectedElementType: selectedElement.type,
+  });
 };
 
 const handleOnMessageImportMapComposition = (mode: ImportMapMode) => {
   const { currentPage } = figma;
-  const selectedElement = currentPage.selection[0];
+  const selectedElement = getSelectedElement(currentPage.selection[0]);
 
-  if (!selectedElement) {
+  if (selectedElement == null) {
     message.responseGetImportMapComposition([]);
     return;
   }
-  if (
-    selectedElement.type === "FRAME" ||
-    selectedElement.type === "GROUP" ||
-    selectedElement.type === "COMPONENT"
-  ) {
-    message.responseGetImportMapComposition(
-      createImportMapComposition(
-        selectedElement.children.concat(),
-        selectedElement.name,
-        mode,
-      ),
-    );
-  }
-};
 
-const handleOnMessageGetFigmaPAT = async (key: string) => {
-  const token = await figma.clientStorage.getAsync(key);
-  message.responseGetFigmaPAT({ token });
-};
-
-const handleOnMessagePutFigmaPAT = async (key: string, value: string) => {
-  await figma.clientStorage.setAsync(key, value);
-  const token = await figma.clientStorage.getAsync(key);
-  console.log(token);
+  message.responseGetImportMapComposition(
+    createImportMapComposition(
+      selectedElement.children.concat(),
+      selectedElement.name,
+      mode,
+    ),
+  );
 };
 
 figma.ui.on("message", async (message) => {
@@ -97,13 +119,6 @@ figma.ui.on("message", async (message) => {
         message.scale,
       );
       return;
-    case messageTypes.getFigmaPAT:
-      handleOnMessageGetFigmaPAT(message.key);
-      return;
-    case messageTypes.putFigmaPAT:
-      await handleOnMessagePutFigmaPAT(message.key, message.value);
-      await handleOnMessageGetFigmaPAT(message.key);
-      return;
     default:
       return;
   }
@@ -111,4 +126,5 @@ figma.ui.on("message", async (message) => {
 figma.on("selectionchange", () =>
   handleOnMessageImportMapComposition("normal"),
 );
+figma.once("run", () => handleOnMessageImportMapComposition("normal"));
 figma.showUI(__html__, APP_UI_OPTIONS);
